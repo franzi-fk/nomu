@@ -4,7 +4,8 @@
     :id="id"
     :placeholder="placeholder"
     :style="{ width: widthStyle }"
-    :value="value"
+    :value="modelValue"
+    @input="onInputChange"
   />
 </template>
 
@@ -18,20 +19,25 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    required: false,
     default: "Placeholder text...",
   },
   width: {
     type: String,
-    required: false,
+    default: "auto",
   },
-  value: {
+  modelValue: {
     type: String,
-    required: false,
+    required: true,
   },
 });
 
+const emit = defineEmits(["update:modelValue"]);
+
 const widthStyle = computed(() => props.width || "auto");
+
+function onInputChange(event) {
+  emit("update:modelValue", event.target.value);
+}
 </script>
 
 <style scoped>
@@ -40,5 +46,9 @@ input {
   border: none;
   border-bottom: 2px solid black;
   text-align: center;
+}
+
+input:focus {
+  outline: none;
 }
 </style>
