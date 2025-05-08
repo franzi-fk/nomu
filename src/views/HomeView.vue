@@ -1,25 +1,35 @@
 <template>
   <div class="wrapper">
-    <h2 class="sr-only">Looped timer</h2>
-    <form>
-      <div class="form-input">
-        <label for="inp-minutes">Notify me every</label>
-        <InputText
-          id="inp-minutes"
-          placeholder="5"
-          width="3rem"
-          v-model="minutes"
+    <article id="set-timer" class="wrapper" v-if="!timerStarted">
+      <h2 class="sr-only">Looped timer</h2>
+      <form>
+        <div class="form-input">
+          <label for="inp-minutes">Notify me every</label>
+          <InputText
+            id="inp-minutes"
+            placeholder="5"
+            width="3rem"
+            v-model="minutes"
+          />
+          <label for="inp-minutes">minutes</label>
+        </div>
+        <SolidButton
+          text="Start"
+          id="btn-start-timer"
+          @click.prevent="timerStarted = !timerStarted"
         />
-        <label for="inp-minutes">minutes</label>
-      </div>
-
+      </form>
+    </article>
+    <article id="run-timer" class="wrapper" v-else>
+      <h2 class="sr-only">Looped timer</h2>
+      {{ minutes }} minutes
+      <LoopedTimer :duration="Number(minutes)" />
       <SolidButton
-        text="Start"
-        id="btn-start-timer"
+        text="Stop"
+        id="btn-stop-timer"
         @click.prevent="timerStarted = !timerStarted"
       />
-      <p v-if="timerStarted">timer started</p>
-    </form>
+    </article>
   </div>
 </template>
 
@@ -27,6 +37,7 @@
 import { ref, watch, nextTick } from "vue";
 import SolidButton from "@/components/SolidButton.vue";
 import InputText from "@/components/InputText.vue";
+import LoopedTimer from "@/components/LoopedTimer.vue";
 
 const timerStarted = ref(false);
 
