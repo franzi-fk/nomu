@@ -1,5 +1,6 @@
 <template>
   <input
+    class="bg-transparent border-b-2 border-neutral-950 text-center focus:outline-none"
     type="text"
     :id="id"
     :placeholder="placeholder"
@@ -39,16 +40,3 @@ function onInputChange(event) {
   emit("update:modelValue", event.target.value);
 }
 </script>
-
-<style scoped>
-input {
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid black;
-  text-align: center;
-}
-
-input:focus {
-  outline: none;
-}
-</style>

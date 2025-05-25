@@ -1,5 +1,9 @@
 <template>
-  <button>{{ text }}</button>
+  <button
+    class="border-[0.16rem] border-neutral-600/40 bg-transparent px-4 py-[0.4375rem] rounded-[0.35rem] cursor-pointer text-neutral-800 lowercase max-w-fit hover:border-neutral-600/70 hover:text-neutral-950"
+  >
+    {{ text }}
+  </button>
 </template>
 
 <script setup>
@@ -11,21 +15,3 @@ defineProps({
   },
 });
 </script>
-
-<style scoped>
-button {
-  border: 2px solid #c0a2a2;
-  background-color: transparent;
-  padding: 0.4375rem 1rem;
-  border-radius: 0.35rem;
-  cursor: pointer;
-  text-transform: lowercase;
-  max-width: fit-content;
-  color: #4d3939;
-}
-
-button:hover {
-  border: 2px solid #ab7979;
-  color: black;
-}
-</style>

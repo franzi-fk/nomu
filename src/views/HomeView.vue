@@ -8,8 +8,8 @@
       v-if="!timerStarted"
     >
       <h2 class="sr-only">Looped timer</h2>
-      <form>
-        <div class="form-input">
+      <form class="flex flex-col gap-10 items-center justify-center">
+        <div class="form-input flex flex-row gap-[0.6rem]">
           <label for="inp-minutes">Notify me every</label>
           <InputText
             id="inp-minutes"
@@ -67,18 +67,3 @@ watch(minutes, (newValue) => {
   });
 });
 </script>
-
-<style scoped>
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-  align-items: center;
-  justify-content: center;
-}
-.form-input {
-  display: flex;
-  flex-direction: row;
-  gap: 0.6rem;
-}
-</style>
