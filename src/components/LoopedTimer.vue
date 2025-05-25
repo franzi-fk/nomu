@@ -1,5 +1,5 @@
 <template>
-  <div class="looped-timer">
+  <div class="text-2xl font-bold text-center">
     <p>{{ displayTime }}</p>
   </div>
 </template>
@@ -53,11 +53,3 @@ const displayTime = computed(() => {
     : `${minutes}:${seconds}`;
 });
 </script>
-
-<style scoped>
-.looped-timer {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-}
-</style>

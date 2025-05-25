@@ -1,6 +1,12 @@
 <template>
-  <div class="wrapper">
-    <article id="set-timer" class="wrapper" v-if="!timerStarted">
+  <div
+    class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
+  >
+    <article
+      id="set-timer"
+      class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
+      v-if="!timerStarted"
+    >
       <h2 class="sr-only">Looped timer</h2>
       <form>
         <div class="form-input">
@@ -20,7 +26,11 @@
         />
       </form>
     </article>
-    <article id="run-timer" class="wrapper" v-else>
+    <article
+      id="run-timer"
+      class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
+      v-else
+    >
       <h2 class="sr-only">Looped timer</h2>
       {{ minutes }} minutes
       <LoopedTimer :duration="Number(minutes)" />

@@ -1,50 +1,8 @@
-:root {
-  --bg-color: rgb(252, 212, 219);
-  --black: black;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-h1,
-h2,
-h3,
-h4,
-p,
-li,
-ul,
-ol,
-small {
-  padding: 0;
-  margin: 0;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 100;
-  letter-spacing: 1px;
-  color: color-mix(in srgb, var(--black) 80%, var(--bg-color) 20%);
-}
-
-html,
-header,
-body {
-  padding: 0;
-  margin: 0;
-}
+@import "tailwindcss";
 
 html,
 body {
-  width: 100%;
-  height: 100%;
   font-family: "Kantumruy Pro", sans-serif;
-  background-color: var(--bg-color);
-  letter-spacing: 0.8px;
-  font-size: 1.125rem;
-  text-transform: lowercase;
 }
 
 button,
@@ -52,40 +10,4 @@ input {
   font-family: "Kantumruy Pro", sans-serif;
   letter-spacing: 0.8px;
   font-size: 1.125rem;
-}
-
-#app,
-.app-wrapper,
-main {
-  width: 100%;
-  height: 100%;
-}
-
-.app-wrapper {
-  display: grid;
-  grid-template-rows: 2.5rem 1fr;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-grow: 1;
-  height: 100%;
-  width: 100%;
-  padding-bottom: 1.75rem;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
