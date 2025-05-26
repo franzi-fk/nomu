@@ -7,7 +7,7 @@
       <XMarkIcon class="h-6 w-6 text-neutral-50" />
     </div>
 
-    <article class="flex flex-col gap-9 p-4">
+    <article class="flex flex-col gap-9 px-4 pt-2">
       <section>
         <h3>Notification Sound</h3>
         <ul class="divide-y divide-neutral-50/30">
@@ -24,18 +24,18 @@
                   <input
                     type="radio"
                     name="selectedSound"
-                    :value="sound.file"
+                    :value="sound"
                     class="sr-only peer"
-                    v-model="selectedSound"
+                    v-model="appStore.selectedSound"
                   />
 
                   <!-- Track -->
                   <div
                     class="w-11 h-6 rounded-full transition-all"
                     :class="
-                      selectedSound === sound.file
+                      appStore.selectedSound.name === sound.name
                         ? 'bg-rose-200'
-                        : 'bg-neutral-400'
+                        : 'bg-neutral-200/40'
                     "
                   ></div>
 
@@ -43,11 +43,13 @@
                   <div
                     class="absolute flex items-center justify-center left-0.5 top-0.5 w-5 h-5 bg-neutral-600 rounded-full transition-transform pointer-events-none"
                     :class="
-                      selectedSound === sound.file ? 'translate-x-full' : ''
+                      appStore.selectedSound.name === sound.name
+                        ? 'translate-x-full'
+                        : ''
                     "
                   >
                     <CheckIcon
-                      v-show="selectedSound === sound.file"
+                      v-show="appStore.selectedSound.name === sound.name"
                       class="h-3 w-3 text-rose-100 stroke-[5]"
                     />
                   </div>
@@ -55,7 +57,7 @@
 
                 <span
                   :class="
-                    selectedSound === sound.file
+                    appStore.selectedSound.name === sound.name
                       ? 'text-neutral-50'
                       : 'text-neutral-200'
                   "
@@ -65,7 +67,7 @@
               </label>
 
               <!-- Play Button -->
-              <button @click="playSound(sound.file)">
+              <button @click="playSound(sound.file)" class="cursor-pointer">
                 <PlayIcon
                   class="w-6 h-6 text-neutral-200 hover:text-rose-200"
                 />
@@ -86,10 +88,31 @@
 </template>
 
 <script setup>
+import { useAppStore } from "@/stores/appStore";
 import { XMarkIcon, CheckIcon, PlayIcon } from "@heroicons/vue/24/outline";
-import { ref } from "vue";
+import { watch } from "vue";
 
-const selectedSound = ref(null);
+const appStore = useAppStore();
+appStore.loadUserSettings();
+
+// Run app store action when user changes a setting
+// Watch for changes to selectedSound
+watch(
+  () => appStore.selectedSound.name,
+  (newName) => {
+    const matched = sounds.find((s) => s.name === newName);
+    if (matched) {
+      appStore.setSound(matched);
+    }
+  }
+);
+// Watch for changes to selectedBackground
+watch(
+  () => appStore.selectedBackground,
+  (newBg) => {
+    appStore.setBackground(newBg);
+  }
+);
 
 const sounds = [
   { name: "Sound 1", file: "snd-1.mp3" },

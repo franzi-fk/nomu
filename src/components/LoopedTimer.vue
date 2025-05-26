@@ -6,6 +6,9 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import { useAppStore } from "@/stores/appStore";
+
+const appStore = useAppStore();
 
 const props = defineProps({
   duration: {
@@ -16,7 +19,18 @@ const props = defineProps({
 
 const timeLeft = ref(props.duration * 60); // minutes to seconds
 const intervalId = ref(null);
-const audio = new Audio("/note.mp3");
+
+// Create an audio based on the selected sound
+const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`)); // Adjust path if needed
+
+// React to sound changes
+watch(
+  () => appStore.selectedSound,
+  (newSound) => {
+    audio.value = new Audio(`/sounds/${newSound.file}`); // update audio
+  },
+  { immediate: true }
+);
 
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
@@ -25,7 +39,9 @@ const startTimer = () => {
     timeLeft.value--;
 
     if (timeLeft.value <= 0) {
-      audio.play();
+      if (audio.value && typeof audio.value.play === "function") {
+        audio.value.play();
+      }
       timeLeft.value = props.duration * 60;
     }
   }, 1000);
