@@ -2,6 +2,7 @@
   <div
     class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
   >
+    <!-- <CustomizeSidebar /> -->
     <article
       id="set-timer"
       class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
@@ -48,6 +49,7 @@ import { ref, watch, nextTick } from "vue";
 import SolidButton from "@/components/SolidButton.vue";
 import InputText from "@/components/InputText.vue";
 import LoopedTimer from "@/components/LoopedTimer.vue";
+import CustomizeSidebar from "@/components/CustomizeSidebar.vue";
 
 const timerStarted = ref(false);
 
