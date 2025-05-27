@@ -2,7 +2,7 @@
   <div
     class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
   >
-    <!-- <CustomizeSidebar /> -->
+    <CustomizeSidebar v-show="appStore.sidebarVisible" />
     <article
       id="set-timer"
       class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
@@ -50,7 +50,9 @@ import SolidButton from "@/components/SolidButton.vue";
 import InputText from "@/components/InputText.vue";
 import LoopedTimer from "@/components/LoopedTimer.vue";
 import CustomizeSidebar from "@/components/CustomizeSidebar.vue";
+import { useAppStore } from "@/stores/appStore";
 
+const appStore = useAppStore();
 const timerStarted = ref(false);
 
 // Sanitize inp-minutes

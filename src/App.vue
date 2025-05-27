@@ -22,7 +22,7 @@ import AppHeader from "./components/AppHeader.vue";
     <div
       class="fixed inset-0 z-0 bg-cover bg-center mix-blend-multiply opacity-40 transition-all duration-200 pointer-events-none"
       id="bg-layer"
-      style="background-image: url('/public/bg-1.jpg')"
+      style="background-image: url('/public/backgrounds/bg-1.jpg')"
     ></div>
   </div>
 </template>

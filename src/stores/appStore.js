@@ -10,6 +10,7 @@ export const useAppStore = defineStore("appStore", {
       name: "Image 1",
       file: "bg-1.jpg",
     },
+    sidebarVisible: false,
   }),
   actions: {
     setSound(soundObj) {
@@ -32,6 +33,12 @@ export const useAppStore = defineStore("appStore", {
       if (storedBackground) {
         this.selectedBackground = JSON.parse(storedBackground);
       }
+    },
+    openSidebar() {
+      this.sidebarVisible = true;
+    },
+    closeSidebar() {
+      this.sidebarVisible = false;
     },
   },
 });
