@@ -2,6 +2,19 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore("appStore", {
   state: () => ({
+    sounds: [
+      { name: "Sound 1", file: "snd-1.mp3" },
+      { name: "Sound 2", file: "snd-2.mp3" },
+      { name: "Sound 3", file: "snd-3.mp3" },
+      { name: "Sound 4", file: "snd-4.mp3" },
+    ],
+    backgrounds: [
+      { name: "no", file: null },
+      { name: "1", file: "bg-1.jpg" },
+      { name: "2", file: "bg-2.jpg" },
+      { name: "3", file: "bg-3.jpg" },
+      { name: "4", file: "bg-4.jpg" },
+    ],
     selectedSound: {
       name: "Sound 1",
       file: "snd-1.mp3",
