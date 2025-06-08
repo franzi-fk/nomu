@@ -1,3 +1,9 @@
+// load theme from LS
+const savedTheme = localStorage.getItem("selectedTheme");
+if (savedTheme) {
+  document.documentElement.setAttribute("data-theme", savedTheme);
+}
+
 import "./assets/main.css";
 
 import { createApp } from "vue";

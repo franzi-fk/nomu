@@ -15,6 +15,19 @@ export const useAppStore = defineStore("appStore", {
       { name: "3", file: "bg-3.jpg" },
       { name: "4", file: "bg-4.jpg" },
     ],
+    themes: [
+      "light-neutral",
+      "light-rose",
+      "light-blue",
+      "light-green",
+      "light-orange",
+      "dark-neutral",
+      "dark-rose",
+      "dark-blue",
+      "dark-green",
+      "dark-orange",
+    ],
+    selectedTheme: "light-rose",
     selectedSound: {
       name: "Sound 1",
       file: "snd-1.mp3",
@@ -37,14 +50,25 @@ export const useAppStore = defineStore("appStore", {
         JSON.stringify(this.selectedBackground)
       );
     },
+    setTheme(theme) {
+      if (this.themes.includes(theme)) {
+        this.selectedTheme = theme;
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("selectedTheme", theme);
+      }
+    },
     loadUserSettings() {
       const storedSound = localStorage.getItem("selectedSound");
       const storedBackground = localStorage.getItem("selectedBackground");
+      const storedTheme = localStorage.getItem("selectedTheme");
       if (storedSound) {
         this.selectedSound = JSON.parse(storedSound);
       }
       if (storedBackground) {
         this.selectedBackground = JSON.parse(storedBackground);
+      }
+      if (storedTheme) {
+        this.selectedTheme = storedTheme;
       }
     },
     openSidebar() {

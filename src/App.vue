@@ -15,7 +15,7 @@ const backgroundStyle = computed(() => {
 
 <template>
   <div
-    class="w-full h-full bg-rose-100 text-neutral-950 tracking-[0.8px] text-[1.125rem] lowercase"
+    class="w-full h-full bg-bg text-text tracking-[0.8px] text-[1.125rem] lowercase"
   >
     <!-- content layer -->
     <div class="z-50 w-full h-full grid grid-rows-[2.5rem_1fr]">
@@ -36,5 +36,3 @@ const backgroundStyle = computed(() => {
     ></div>
   </div>
 </template>
-
-<style scoped></style>

@@ -1,4 +1,63 @@
 @import "tailwindcss";
+@theme {
+  --color-bg: #ffe4e6;
+  --color-primary: #fecdd3;
+  --color-text: #0a0a0a;
+}
+
+/* Light Themes */
+[data-theme="light-neutral"] {
+  --color-bg: #f1f1f1;
+  --color-primary: #bababa;
+  --color-text: #0a0a0a;
+}
+[data-theme="light-rose"] {
+  --color-bg: #ffe4e6;
+  --color-primary: #fecdd3;
+  --color-text: #0a0a0a;
+}
+[data-theme="light-blue"] {
+  --color-bg: #bdd9fe;
+  --color-primary: #abd1ff;
+  --color-text: #0a0a0a;
+}
+[data-theme="light-green"] {
+  --color-bg: #ccf0d5;
+  --color-primary: #a7edba;
+  --color-text: #0a0a0a;
+}
+[data-theme="light-orange"] {
+  --color-bg: #f4dac6;
+  --color-primary: #ffcaa2;
+  --color-text: #0a0a0a;
+}
+
+/* Dark Themes */
+[data-theme="dark-neutral"] {
+  --color-bg: #292929;
+  --color-primary: #818181;
+  --color-text: #999999;
+}
+[data-theme="dark-rose"] {
+  --color-bg: #2c2225;
+  --color-primary: #af8391;
+  --color-text: #999999;
+}
+[data-theme="dark-blue"] {
+  --color-bg: #232435;
+  --color-primary: #8a8acc;
+  --color-text: #999999;
+}
+[data-theme="dark-green"] {
+  --color-bg: #212822;
+  --color-primary: #81b78c;
+  --color-text: #999999;
+}
+[data-theme="dark-orange"] {
+  --color-bg: #292423;
+  --color-primary: #b79081;
+  --color-text: #999999;
+}
 
 html,
 body {
