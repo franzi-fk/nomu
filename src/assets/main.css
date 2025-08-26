@@ -118,6 +118,7 @@
 html,
 body {
   font-family: "Kantumruy Pro", sans-serif;
+  @apply selection:bg-[color-mix(in_srgb,var(--color-accent)_60%,var(--color-bg-l2))] selection:text-text;
 }
 
 button,

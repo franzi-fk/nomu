@@ -1,6 +1,6 @@
 <template>
   <input
-    class="bg-transparent border-b-2 border-text text-center focus:outline-none"
+    class="bg-transparent border-b-2 border-accent text-center focus:outline-none"
     type="text"
     :id="id"
     :placeholder="placeholder"

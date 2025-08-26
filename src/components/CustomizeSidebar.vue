@@ -64,28 +64,12 @@
               class="grid grid-cols-5 gap-y-6 gap-x-3 w-fill justify-between py-3"
             >
               <li v-for="theme in appStore.themes" :key="theme">
-                <label class="relative flex flex-col items-center">
-                  <input
-                    type="radio"
-                    class="sr-only"
-                    :value="theme"
-                    v-model="appStore.selectedTheme"
-                  />
-                  <div
-                    class="border-2 rounded-[0.375rem] p-1 w-[2.15rem] h-[2.15rem] text-base text-center cursor-pointer hover:border-accent hover:text-accent transition-colors duration-150"
-                    :class="{
-                      'border-text-muted-l2 text-text-muted-l1':
-                        appStore.selectedTheme !== theme,
-                      'border-text text-text': appStore.selectedTheme === theme,
-                    }"
-                  >
-                    t
-                  </div>
-                  <div
-                    v-show="appStore.selectedTheme === theme"
-                    class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-text rounded"
-                  ></div>
-                </label>
+                <SelectableItem
+                  v-model="appStore.selectedTheme"
+                  :value="theme"
+                  :bg-color="appStore.themeColors[theme]"
+                >
+                </SelectableItem>
               </li>
             </ul>
           </section>
@@ -97,29 +81,12 @@
               class="grid grid-cols-5 gap-y-6 gap-x-3 w-fill justify-between py-3"
             >
               <li v-for="image in appStore.backgrounds" :key="image.name">
-                <label class="relative flex flex-col items-center">
-                  <input
-                    type="radio"
-                    class="sr-only"
-                    :value="image.name"
-                    v-model="appStore.selectedBackground"
-                  />
-                  <div
-                    class="border-2 rounded-[0.375rem] p-1 w-[2.15rem] h-[2.15rem] text-base text-center cursor-pointer hover:border-text hover:text-text transition-colors duration-150"
-                    :class="{
-                      'border-text-muted-l2 text-text-muted-l1':
-                        appStore.selectedBackground !== image.name,
-                      'border-text text-text':
-                        appStore.selectedBackground === image.name,
-                    }"
-                  >
-                    {{ image.name }}
-                  </div>
-                  <div
-                    v-show="appStore.selectedBackground === image.name"
-                    class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-text rounded"
-                  ></div>
-                </label>
+                <SelectableItem
+                  v-model="appStore.selectedBackground"
+                  :value="image.name"
+                >
+                  {{ image.name }}
+                </SelectableItem>
               </li>
             </ul>
           </section>
@@ -135,6 +102,7 @@ import { XMarkIcon, PlayIcon } from "@heroicons/vue/24/outline";
 import { watch, ref, onMounted, onBeforeUnmount } from "vue";
 import ToggleSwitch from "./ToggleSwitch.vue";
 import TextButton from "./TextButton.vue";
+import SelectableItem from "./SelectableItem.vue";
 
 const appStore = useAppStore();
 appStore.loadUserSettings();

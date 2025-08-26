@@ -27,6 +27,18 @@ export const useAppStore = defineStore("appStore", {
       "dark-cyan",
       "dark-orange",
     ],
+    themeColors: {
+      "light-neutral": "#A6A6A6",
+      "light-rose": "#DAACB6",
+      "light-blue": "#ACA9DB",
+      "light-cyan": "#92BEC9",
+      "light-orange": "#D7B09F",
+      "dark-neutral": "#636363",
+      "dark-rose": "#84505C",
+      "dark-blue": "#5D5A89",
+      "dark-cyan": "#507C86",
+      "dark-orange": "#936D5D",
+    },
     selectedTheme: "light-rose",
     selectedSound: {
       name: "Sound 1",
