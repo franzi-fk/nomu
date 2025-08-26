@@ -1,19 +1,16 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts}"],
-  safelist: [
-    "bg-bg",
-    "text-text",
-    "bg-primary",
-    "text-primary",
-    "hover:bg-primary",
-    "hover:text-primary",
-  ],
   theme: {
     extend: {
       colors: {
-        th: "var(--color-bg)",
-        primary: "var(--color-primary)",
+        accent: "var(--color-accent)",
         text: "var(--color-text)",
+        "inactive-l1": "var(--inactive-l1)",
+        "bg-l1": "var(--color-bg-l1)",
+        "text-muted-l1": "var(--color-text-muted-l1)",
+        "inactive-l2": "var(--inactive-l2)",
+        "bg-l2": "var(--color-bg-l2)",
+        "text-muted-l2": "var(--color-text-muted-l2)",
       },
     },
   },

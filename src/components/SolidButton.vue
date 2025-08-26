@@ -1,6 +1,6 @@
 <template>
   <button
-    class="border-[0.125rem] border-text/50 bg-transparent px-4 py-[0.4375rem] rounded-[0.35rem] cursor-pointer text-text/90 lowercase max-w-fit hover:border-text/60 hover:text-text hover:bg-text/10"
+    class="border-[0.125rem] border-accent/80 bg-transparent px-4 py-[0.4375rem] rounded-lg cursor-pointer text-text/75 lowercase max-w-fit hover:border-accent hover:text-text hover:bg-accent/20"
   >
     {{ text }}
   </button>

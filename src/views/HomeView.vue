@@ -10,7 +10,7 @@
     >
       <h2 class="sr-only">Looped timer</h2>
       <form class="flex flex-col gap-10 items-center justify-center">
-        <div class="form-input flex flex-row gap-[0.6rem]">
+        <div class="form-input flex flex-row gap-[0.6rem] text-text">
           <label for="inp-minutes">Notify me every</label>
           <InputText
             id="inp-minutes"
@@ -29,12 +29,15 @@
     </article>
     <article
       id="run-timer"
-      class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
+      class="flex flex-col items-center justify-center gap-10 flex-grow h-full w-full pb-[1.75rem]"
       v-else
     >
       <h2 class="sr-only">Looped timer</h2>
-      {{ minutes }} minutes
-      <LoopedTimer :duration="Number(minutes)" />
+      <div class="flex flex-row items-center justify-center gap-3">
+        <ArrowPathIcon class="h-5 text-text" />
+        <div class="text-text-muted-l1">{{ minutes }} minutes</div>
+      </div>
+      <LoopedTimer :duration="Number(minutes)" class="text-text mb-4" />
       <SolidButton
         text="Stop"
         id="btn-stop-timer"
@@ -51,6 +54,7 @@ import InputText from "@/components/InputText.vue";
 import LoopedTimer from "@/components/LoopedTimer.vue";
 import CustomizeSidebar from "@/components/CustomizeSidebar.vue";
 import { useAppStore } from "@/stores/appStore";
+import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 
 const appStore = useAppStore();
 const timerStarted = ref(false);

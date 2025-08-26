@@ -1,5 +1,5 @@
 <template>
-  <div class="text-2xl font-bold text-center">
+  <div class="text-4xl font-light text-center">
     <p>{{ displayTime }}</p>
   </div>
 </template>

@@ -19,12 +19,12 @@ export const useAppStore = defineStore("appStore", {
       "light-neutral",
       "light-rose",
       "light-blue",
-      "light-green",
+      "light-cyan",
       "light-orange",
       "dark-neutral",
       "dark-rose",
       "dark-blue",
-      "dark-green",
+      "dark-cyan",
       "dark-orange",
     ],
     selectedTheme: "light-rose",
@@ -38,6 +38,9 @@ export const useAppStore = defineStore("appStore", {
     },
     sidebarVisible: false,
   }),
+  getters: {
+    isDarkTheme: (state) => state.selectedTheme.startsWith("dark-"),
+  },
   actions: {
     setSound(soundObj) {
       this.selectedSound = soundObj;
