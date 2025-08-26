@@ -16,15 +16,14 @@
       <!-- floating close button -->
       <TextButton
         @click="appStore.closeSidebar"
-        class="absolute top-4 right-[19.5rem] aspect-square flex items-center justify-center rounded-full z-[105] hover:bg-bg-l2/75 cursor-pointer"
+        class="absolute top-4 right-[19.5rem] flex items-center justify-center rounded-full z-[105] hover:bg-bg-l2/75 cursor-pointer"
         aria-label="Close sidebar"
         :icon="XMarkIcon"
       />
-      <!-- <XMarkIcon class="h-6 w-6 text-text-muted-l1 hover:text-text" />
-      </button> -->
 
       <!-- sidebar -->
       <aside
+        ref="sidebar"
         id="sidebar-wrapper"
         class="absolute top-0 right-0 h-full w-[19rem] bg-bg-l2/75 p-4 rounded-tl-3xl rounded-bl-3xl text-text backdrop-blur text-[0.9688rem] tracking-[.085rem] z-[102] overflow-auto"
       >
@@ -133,7 +132,7 @@
 <script setup>
 import { useAppStore } from "@/stores/appStore";
 import { XMarkIcon, PlayIcon } from "@heroicons/vue/24/outline";
-import { watch } from "vue";
+import { watch, ref, onMounted, onBeforeUnmount } from "vue";
 import ToggleSwitch from "./ToggleSwitch.vue";
 import TextButton from "./TextButton.vue";
 
@@ -174,4 +173,22 @@ function playSound(filename) {
   const audio = new Audio(`/sounds/${filename}`);
   audio.play();
 }
+
+const sidebar = ref(null);
+
+// function to detect outside clicks
+function handleClickOutside(event) {
+  if (!appStore.sidebarVisible) return;
+  if (sidebar.value && !sidebar.value.contains(event.target)) {
+    appStore.closeSidebar();
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>

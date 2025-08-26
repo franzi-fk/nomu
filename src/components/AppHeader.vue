@@ -5,7 +5,7 @@
     <TextButton
       :icon="Cog6ToothIcon"
       text="Customize"
-      @click="appStore.openSidebar"
+      @click.stop="appStore.openSidebar"
       v-show="!appStore.sidebarVisible"
       class="text-text/75"
     />
