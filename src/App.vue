@@ -7,8 +7,8 @@ import { useAppStore } from "./stores/appStore";
 const appStore = useAppStore();
 
 const backgroundStyle = computed(() => {
-  return appStore.selectedBackground
-    ? `background-image: url('/backgrounds/bg-${appStore.selectedBackground}.jpg')`
+  return appStore.selectedBackground?.file
+    ? `background-image: url('/backgrounds/${appStore.selectedBackground.file}')`
     : "";
 });
 </script>

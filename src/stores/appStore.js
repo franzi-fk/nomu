@@ -2,11 +2,21 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore("appStore", {
   state: () => ({
+    selectedTheme: "light-rose",
+    selectedSound: {
+      name: "handpan",
+      file: "snd-1.mp3",
+    },
+    selectedBackground: {
+      name: "1",
+      file: "bg-1.jpg",
+    },
+    sidebarVisible: false,
     sounds: [
-      { name: "Sound 1", file: "snd-1.mp3" },
-      { name: "Sound 2", file: "snd-2.mp3" },
-      { name: "Sound 3", file: "snd-3.mp3" },
-      { name: "Sound 4", file: "snd-4.mp3" },
+      { name: "handpan", file: "snd-1.mp3" },
+      { name: "chime", file: "snd-2.mp3" },
+      { name: "droplet", file: "snd-3.mp3" },
+      { name: "strings", file: "snd-4.mp3" },
     ],
     backgrounds: [
       { name: "no", file: null },
@@ -27,28 +37,19 @@ export const useAppStore = defineStore("appStore", {
       "dark-cyan",
       "dark-orange",
     ],
+    // mapping the preview colors in the sidebar to the themes
     themeColors: {
       "light-neutral": "#A6A6A6",
       "light-rose": "#DAACB6",
       "light-blue": "#ACA9DB",
       "light-cyan": "#92BEC9",
-      "light-orange": "#D7B09F",
+      "light-orange": "#D39E88",
       "dark-neutral": "#636363",
       "dark-rose": "#84505C",
       "dark-blue": "#5D5A89",
       "dark-cyan": "#507C86",
-      "dark-orange": "#936D5D",
+      "dark-orange": "#AE7359",
     },
-    selectedTheme: "light-rose",
-    selectedSound: {
-      name: "Sound 1",
-      file: "snd-1.mp3",
-    },
-    selectedBackground: {
-      name: "Image 1",
-      file: "bg-1.jpg",
-    },
-    sidebarVisible: false,
   }),
   getters: {
     isDarkTheme: (state) => state.selectedTheme.startsWith("dark-"),
@@ -73,18 +74,45 @@ export const useAppStore = defineStore("appStore", {
       }
     },
     loadUserSettings() {
-      const storedSound = localStorage.getItem("selectedSound");
-      const storedBackground = localStorage.getItem("selectedBackground");
+      // Helper to safely parse JSON
+      const safeParse = (key, defaultValue) => {
+        const value = localStorage.getItem(key);
+        if (!value) return defaultValue;
+        try {
+          return JSON.parse(value);
+        } catch (err) {
+          console.warn(`Failed to parse localStorage key "${key}":`, err);
+          return defaultValue;
+        }
+      };
+
+      // Load selectedSound
+      const defaultSound = this.sounds[0]; // first sound as default
+      const storedSound = safeParse("selectedSound", defaultSound);
+      this.selectedSound =
+        storedSound?.name && storedSound?.file ? storedSound : defaultSound;
+
+      // Load selectedBackground
+      const defaultBackground = this.backgrounds.find((b) => b.name === "1");
+      const storedBackground = safeParse(
+        "selectedBackground",
+        defaultBackground
+      );
+      const matchedBackground = this.backgrounds.find(
+        (b) => b.name === storedBackground.name
+      );
+      this.selectedBackground = matchedBackground || defaultBackground;
+
+      // Load theme
+      const defaultTheme = "light-rose";
       const storedTheme = localStorage.getItem("selectedTheme");
-      if (storedSound) {
-        this.selectedSound = JSON.parse(storedSound);
-      }
-      if (storedBackground) {
-        this.selectedBackground = JSON.parse(storedBackground);
-      }
-      if (storedTheme) {
-        this.selectedTheme = storedTheme;
-      }
+      this.selectedTheme =
+        storedTheme && this.themes.includes(storedTheme)
+          ? storedTheme
+          : defaultTheme;
+
+      // Apply theme to DOM
+      document.documentElement.setAttribute("data-theme", this.selectedTheme);
     },
     openSidebar() {
       this.sidebarVisible = true;

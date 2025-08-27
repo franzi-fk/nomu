@@ -83,7 +83,7 @@
               <li v-for="image in appStore.backgrounds" :key="image.name">
                 <SelectableItem
                   v-model="appStore.selectedBackground"
-                  :value="image.name"
+                  :value="image"
                 >
                   {{ image.name }}
                 </SelectableItem>
