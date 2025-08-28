@@ -35,8 +35,11 @@
     >
       <h2 class="sr-only">Looped timer</h2>
       <div class="flex flex-row items-center justify-center gap-3">
-        <ArrowPathIcon class="h-5 text-text" />
-        <div class="text-text-muted-l1">{{ minutes }} minutes</div>
+        <ArrowPathIcon class="h-5 text-text-muted-l1" />
+        <div class="text-text-muted-l1">
+          <span v-if="minutes > 1"> {{ minutes }} minutes </span>
+          <span v-else="minutes > 1"> {{ minutes }} minute </span>
+        </div>
       </div>
       <LoopedTimer :duration="Number(minutes)" class="text-text mb-4" />
       <SolidButton
@@ -65,17 +68,31 @@ const timerStarted = ref(false);
 
 // Sanitize inp-minutes
 const minutes = ref("5");
+
 watch(minutes, (newValue) => {
   nextTick(() => {
-    // Remove non-digit characters
-    let sanitizedValue = newValue.replace(/[^0-9]/g, "");
+    let sanitizedValue = newValue.trim();
 
-    // Convert to number and clamp it to max 120
-    let numericValue = parseInt(sanitizedValue || "0", 10);
-    if (numericValue > 120) numericValue = 120;
-
-    // Update the value
-    minutes.value = numericValue.toString();
+    if (/^0x[0-9a-fA-F]*$/i.test(sanitizedValue)) {
+      // Hex input, keep as is while typing
+      minutes.value = sanitizedValue;
+    } else {
+      // Decimal input: allow digits and max 2 decimal places
+      const match = sanitizedValue.match(/^(\d*)(\.?\d{0,2})?/);
+      if (match) {
+        minutes.value = (match[1] || "") + (match[2] || "");
+      } else {
+        minutes.value = "";
+      }
+    }
   });
 });
+
+// Convert to number when you actually need it
+function getMinutesValue() {
+  const val = minutes.value.trim();
+  if (/^0x[0-9a-fA-F]+$/i.test(val)) return parseInt(val, 16);
+  const parsed = parseFloat(val);
+  return isNaN(parsed) ? 0 : Math.min(parsed, 120);
+}
 </script>

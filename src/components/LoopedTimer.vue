@@ -12,22 +12,24 @@ const appStore = useAppStore();
 
 const props = defineProps({
   duration: {
-    type: Number,
+    type: Number, // in minutes, can be fractional
     required: true,
   },
 });
 
-const timeLeft = ref(props.duration * 60); // minutes to seconds
 const intervalId = ref(null);
 
-// Create an audio based on the selected sound
-const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`)); // Adjust path if needed
+// Use milliseconds internally for accuracy
+const timeLeftMs = ref(Math.round(props.duration * 60 * 1000));
+
+// Create audio based on selected sound
+const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`));
 
 // React to sound changes
 watch(
   () => appStore.selectedSound,
   (newSound) => {
-    audio.value = new Audio(`/sounds/${newSound.file}`); // update audio
+    audio.value = new Audio(`/sounds/${newSound.file}`);
   },
   { immediate: true }
 );
@@ -35,37 +37,34 @@ watch(
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
 
-  intervalId.value = setInterval(() => {
-    timeLeft.value--;
+  const durationMs = Math.round(props.duration * 60 * 1000);
+  timeLeftMs.value = durationMs;
 
-    if (timeLeft.value <= 0) {
+  intervalId.value = setInterval(() => {
+    timeLeftMs.value -= 1000; // decrement 1 second (1000ms)
+
+    if (timeLeftMs.value <= 0) {
       if (audio.value && typeof audio.value.play === "function") {
         audio.value.play();
       }
-      timeLeft.value = props.duration * 60;
+      timeLeftMs.value = durationMs; // reset loop
     }
   }, 1000);
 };
 
-onMounted(() => {
-  startTimer();
-});
-
+onMounted(() => startTimer());
 onBeforeUnmount(() => {
   if (intervalId.value) clearInterval(intervalId.value);
 });
 
-// Format display as HH:MM:SS (omit HH if not needed)
+// Display time as MM:SS (handle fractional minutes correctly)
 const displayTime = computed(() => {
-  const totalSeconds = timeLeft.value;
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const totalSeconds = Math.ceil(timeLeftMs.value / 1000); // round up to avoid 3.599999
+  const minutes = Math.floor(totalSeconds / 60)
     .toString()
     .padStart(2, "0");
   const seconds = (totalSeconds % 60).toString().padStart(2, "0");
 
-  return hours > 0
-    ? `${hours.toString().padStart(2, "0")}:${minutes}:${seconds}`
-    : `${minutes}:${seconds}`;
+  return `${minutes}:${seconds}`;
 });
 </script>
