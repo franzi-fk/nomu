@@ -1,7 +1,8 @@
 <template>
   <div
     id="footer-wrapper"
-    class="flex items-center justify-between pl-8 pr-8 h-12 text-[0.8125rem] text-text-muted-l1"
+    class="flex items-center justify-between pl-8 pr-8 h-12 text-[0.8125rem]"
+    :class="appStore.isDarkTheme ? 'text-text-muted-l1' : 'text-text-muted-l2'"
   >
     <!-- dynamic photo credits -->
     <section id="photo-credits" v-if="credits">
@@ -10,7 +11,7 @@
         :href="credits.authorUrl"
         target="_blank"
         rel="noopener"
-        class="hover:text-text underline underline-offset-4 decoration-2 decoration-transparent hover:decoration-accent"
+        class="hover:text-text underline underline-offset-6 decoration-2 decoration-transparent hover:decoration-accent"
       >
         {{ credits.author }}
       </a>
@@ -19,7 +20,7 @@
         :href="credits.photoUrl"
         target="_blank"
         rel="noopener"
-        class="hover:text-text underline underline-offset-4 decoration-2 decoration-transparent hover:decoration-accent"
+        class="hover:text-text underline underline-offset-6 decoration-2 decoration-transparent hover:decoration-accent"
       >
         Unsplash
       </a>
@@ -32,7 +33,7 @@
     <section id="legal-info">
       <RouterLink
         :to="{ name: 'Legal' }"
-        class="hover:text-text underline underline-offset-4 decoration-2 decoration-transparent hover:decoration-accent"
+        class="hover:text-text underline underline-offset-6 decoration-2 decoration-transparent hover:decoration-accent"
         >Legal Notice</RouterLink
       >
     </section>

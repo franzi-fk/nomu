@@ -13,7 +13,7 @@
     <div
       class="rounded-[0.375rem] p-1 w-[2.15rem] h-[2.15rem] text-base text-center transition-colors duration-150 flex items-center justify-center"
       :class="{
-        'border-2 border-text-muted-l2 text-text-muted-l1':
+        'border-2 border-text-muted-l1 text-text-muted-l2':
           !bgColor && modelValue !== value,
         'border-2 border-text text-text': modelValue === value, // always show border if selected
         'hover:border-text/75 hover:text-text/75': true,

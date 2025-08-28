@@ -35,8 +35,8 @@
     >
       <h2 class="sr-only">Looped timer</h2>
       <div class="flex flex-row items-center justify-center gap-3">
-        <ArrowPathIcon class="h-5 text-text-muted-l1" />
-        <div class="text-text-muted-l1">
+        <ArrowPathIcon class="h-5 text-text-muted-l2" />
+        <div class="text-text-muted-l2">
           <span v-if="minutes > 1"> {{ minutes }} minutes </span>
           <span v-else="minutes > 1"> {{ minutes }} minute </span>
         </div>

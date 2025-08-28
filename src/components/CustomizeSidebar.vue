@@ -38,7 +38,7 @@
                 class="flex items-center justify-between py-4"
               >
                 <div class="flex items-center justify-between gap-5 w-full">
-                  <!-- Custom ToggleSwitch -->
+                  <!-- Custom ToggleSwitch with label -->
                   <ToggleSwitch
                     :name="'selectedSound'"
                     :label="sound.name"
@@ -49,7 +49,7 @@
                   <!-- Play Button -->
                   <button @click="playSound(sound.file)" class="cursor-pointer">
                     <PlayIcon
-                      class="w-6 h-6 text-text-muted-l2 hover:text-text"
+                      class="w-6 h-6 text-text-muted-l1 hover:text-text"
                     />
                   </button>
                 </div>

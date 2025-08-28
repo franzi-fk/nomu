@@ -16,7 +16,7 @@
         :class="
           isChecked
             ? 'bg-accent border-accent'
-            : 'bg-transparent border-text-muted-l2 hover:border-text'
+            : 'bg-transparent border-text-muted-l1 hover:border-text'
         "
       ></div>
 
@@ -26,7 +26,7 @@
         :class="
           isChecked
             ? 'translate-x-full bg-white/90 w-5 h-5 left-0.5 top-0.5'
-            : 'bg-text-muted-l2 w-3.5 h-3.5 left-1.25 top-1.25'
+            : 'bg-text-muted-l1  w-3.5 h-3.5 left-1.25 top-1.25'
         "
       >
         <CheckIcon
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Label -->
-    <span :class="isChecked ? 'text-text' : 'text-text-muted-l1'">
+    <span :class="isChecked ? 'text-text' : 'text-text-muted-l2'">
       {{ label }}
     </span>
   </label>
