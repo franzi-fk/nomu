@@ -19,11 +19,54 @@ export const useAppStore = defineStore("appStore", {
       { name: "strings", file: "snd-4.mp3" },
     ],
     backgrounds: [
-      { name: "no", file: null },
-      { name: "1", file: "bg-1.jpg" },
-      { name: "2", file: "bg-2.jpg" },
-      { name: "3", file: "bg-3.jpg" },
-      { name: "4", file: "bg-4.jpg" },
+      {
+        name: "no",
+        file: null,
+      },
+      {
+        name: "1",
+        file: "bg-1.jpg",
+        credits: {
+          author: "Kristin Charleton",
+          authorUrl:
+            "https://unsplash.com/de/@kristincharleton?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+          photoUrl:
+            "https://unsplash.com/de/fotos/ein-verschwommenes-foto-einer-welle-im-ozean-gTE8_d8mnLE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+        },
+      },
+      {
+        name: "2",
+        file: "bg-2.jpg",
+        credits: {
+          author: "Steve Johnson",
+          authorUrl:
+            "https://unsplash.com/de/@steve_j?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+          photoUrl:
+            "https://unsplash.com/de/fotos/ein-verschwommenes-bild-einer-rosa-weissen-vase-Ynv62BMTaWg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+        },
+      },
+      {
+        name: "3",
+        file: "bg-3.jpg",
+        credits: {
+          author: "Dave Hoefler",
+          authorUrl:
+            "https://unsplash.com/@iamthedave?utm_source=unsplash&utm_medium=referral",
+          photoUrl:
+            "https://unsplash.com/photos/1CwHEUauuFA?utm_source=unsplash&utm_medium=referral",
+        },
+      },
+      {
+        name: "4",
+        file: "bg-4.jpg",
+        credits: {
+          author: "Andrew Ruiz",
+          authorUrl:
+            "https://unsplash.com/de/@andrewruiz?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+          photoUrl:
+            "https://unsplash.com/de/fotos/blauer-und-weisser-himmel-tagsuber-XqHOx_3vcTc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash",
+        },
+      },
     ],
     themes: [
       "light-neutral",

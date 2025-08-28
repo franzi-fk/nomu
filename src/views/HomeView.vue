@@ -1,6 +1,7 @@
 <template>
+  <AppHeader />
   <div
-    class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
+    class="flex flex-col items-center justify-center gap-6 flex-1 w-full pb-[1.75rem]"
   >
     <CustomizeSidebar v-show="appStore.sidebarVisible" />
     <article
@@ -45,6 +46,7 @@
       />
     </article>
   </div>
+  <AppFooter />
 </template>
 
 <script setup>
@@ -55,6 +57,8 @@ import LoopedTimer from "@/components/LoopedTimer.vue";
 import CustomizeSidebar from "@/components/CustomizeSidebar.vue";
 import { useAppStore } from "@/stores/appStore";
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
+import AppFooter from "@/components/AppFooter.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 const appStore = useAppStore();
 const timerStarted = ref(false);
