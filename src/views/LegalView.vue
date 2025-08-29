@@ -6,6 +6,7 @@
         text="Go back"
         :icon="ArrowLongLeftIcon"
         class="mt-6 mb-8 mx-6"
+        data-cy="btn-go-home"
       />
     </router-link>
 

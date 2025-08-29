@@ -3,7 +3,7 @@
     <h1 aria-label="Logo Nomu">
       <NomuLogo
         :variant="appStore.isDarkTheme ? 'darkmode' : 'lightmode'"
-        width="6.25"
+        width="4.5"
         :class="
           appStore.isDarkTheme
             ? 'text-accent filter'
@@ -13,6 +13,7 @@
     </h1>
 
     <TextButton
+      data-cy="btn-open-sidebar"
       :icon="Cog6ToothIcon"
       text="Customize"
       @click.stop="appStore.openSidebar"

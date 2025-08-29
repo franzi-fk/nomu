@@ -5,7 +5,7 @@
     :class="appStore.isDarkTheme ? 'text-text-muted-l1' : 'text-text-muted-l2'"
   >
     <!-- dynamic photo credits -->
-    <section id="photo-credits" v-if="credits">
+    <section id="photo-credits" v-if="credits" data-cy="photo-credits">
       Photo by
       <a
         :href="credits.authorUrl"
@@ -32,6 +32,7 @@
     <!-- legal link -->
     <section id="legal-info">
       <RouterLink
+        data-cy="legal-link"
         :to="{ name: 'Legal' }"
         class="hover:text-text underline underline-offset-6 decoration-2 decoration-transparent hover:decoration-accent"
         >Legal Notice</RouterLink

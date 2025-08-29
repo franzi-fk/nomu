@@ -1,5 +1,9 @@
 <template>
-  <div class="text-4xl font-light text-center">
+  <div
+    id="looped-timer"
+    data-cy="looped-timer"
+    class="text-4xl font-light text-center"
+  >
     <p>{{ displayTime }}</p>
   </div>
 </template>
@@ -19,13 +23,16 @@ const props = defineProps({
 
 const intervalId = ref(null);
 
-// Use milliseconds internally for accuracy
+// time left in milliseconds
 const timeLeftMs = ref(Math.round(props.duration * 60 * 1000));
 
-// Create audio based on selected sound
+// track previous second for accurate sound trigger
+const previousSecond = ref(Math.floor(timeLeftMs.value / 1000));
+
+// audio setup
 const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`));
 
-// React to sound changes
+// react to sound changes
 watch(
   () => appStore.selectedSound,
   (newSound) => {
@@ -37,17 +44,29 @@ watch(
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
 
+  // reset timer
   const durationMs = Math.round(props.duration * 60 * 1000);
   timeLeftMs.value = durationMs;
+  previousSecond.value = Math.floor(timeLeftMs.value / 1000);
 
   intervalId.value = setInterval(() => {
-    timeLeftMs.value -= 1000; // decrement 1 second (1000ms)
+    timeLeftMs.value -= 1000;
 
-    if (timeLeftMs.value <= 0) {
+    const currentSecond = Math.max(Math.floor(timeLeftMs.value / 1000), 0);
+
+    // play sound
+    if (currentSecond === 0 && previousSecond.value > 0) {
       if (audio.value && typeof audio.value.play === "function") {
         audio.value.play();
       }
-      timeLeftMs.value = durationMs; // reset loop
+    }
+
+    previousSecond.value = currentSecond;
+
+    // reset timer after 00:00 has been displayed
+    if (timeLeftMs.value < 0) {
+      timeLeftMs.value = durationMs;
+      previousSecond.value = Math.floor(timeLeftMs.value / 1000);
     }
   }, 1000);
 };
@@ -57,9 +76,9 @@ onBeforeUnmount(() => {
   if (intervalId.value) clearInterval(intervalId.value);
 });
 
-// Display time as MM:SS (handle fractional minutes correctly)
+// display MM:SS
 const displayTime = computed(() => {
-  const totalSeconds = Math.ceil(timeLeftMs.value / 1000); // round up to avoid 3.599999
+  const totalSeconds = Math.floor(Math.max(timeLeftMs.value, 0) / 1000);
   const minutes = Math.floor(totalSeconds / 60)
     .toString()
     .padStart(2, "0");
