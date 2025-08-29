@@ -15,6 +15,7 @@
     >
       <!-- floating close button -->
       <TextButton
+        data-cy="btn-close-sidebar"
         @click="appStore.closeSidebar"
         class="absolute top-4 right-[19.5rem] flex items-center justify-center rounded-full z-[105] hover:bg-bg-l2/75 cursor-pointer"
         aria-label="Close sidebar"
@@ -47,7 +48,11 @@
                   />
 
                   <!-- Play Button -->
-                  <button @click="playSound(sound.file)" class="cursor-pointer">
+                  <button
+                    @click="playSound(sound.file)"
+                    class="cursor-pointer"
+                    data-cy="btn-play-sound"
+                  >
                     <PlayIcon
                       class="w-6 h-6 text-text-muted-l1 hover:text-text"
                     />
@@ -65,6 +70,7 @@
             >
               <li v-for="theme in appStore.themes" :key="theme">
                 <SelectableItem
+                  :data-cy="`theme-item-${theme}`"
                   v-model="appStore.selectedTheme"
                   :value="theme"
                   :bg-color="appStore.themeColors[theme]"
@@ -82,6 +88,7 @@
             >
               <li v-for="image in appStore.backgrounds" :key="image.name">
                 <SelectableItem
+                  :data-cy="`background-item-${image.name}`"
                   v-model="appStore.selectedBackground"
                   :value="image"
                 >

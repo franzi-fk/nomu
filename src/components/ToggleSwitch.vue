@@ -7,6 +7,7 @@
         class="sr-only peer"
         :name="name"
         :value="value"
+        :data-name="value.name"
         v-model="model"
       />
 

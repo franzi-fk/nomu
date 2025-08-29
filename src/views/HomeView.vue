@@ -3,8 +3,12 @@
   <div
     class="flex flex-col items-center justify-center gap-6 flex-1 w-full pb-[1.75rem]"
   >
-    <CustomizeSidebar v-show="appStore.sidebarVisible" />
+    <CustomizeSidebar
+      v-show="appStore.sidebarVisible"
+      data-cy="customization-sidebar"
+    />
     <article
+      data-cy="art-set-timer"
       id="set-timer"
       class="flex flex-col items-center justify-center gap-6 flex-grow h-full w-full pb-[1.75rem]"
       v-if="!timerStarted"
@@ -14,6 +18,7 @@
         <div class="form-input flex flex-row gap-[0.6rem] text-text">
           <label for="inp-minutes">Notify me every</label>
           <InputText
+            data-cy="inp-set-timer"
             id="inp-minutes"
             placeholder="5"
             width="3rem"
@@ -22,6 +27,7 @@
           <label for="inp-minutes">minutes</label>
         </div>
         <SolidButton
+          data-cy="btn-start-timer"
           text="Start"
           id="btn-start-timer"
           @click.prevent="timerStarted = !timerStarted"
@@ -29,6 +35,7 @@
       </form>
     </article>
     <article
+      data-cy="run-timer"
       id="run-timer"
       class="flex flex-col items-center justify-center gap-10 flex-grow h-full w-full pb-[1.75rem]"
       v-else
@@ -43,6 +50,7 @@
       </div>
       <LoopedTimer :duration="Number(minutes)" class="text-text mb-4" />
       <SolidButton
+        data-cy="btn-stop-timer"
         text="Stop"
         id="btn-stop-timer"
         @click.prevent="timerStarted = !timerStarted"
@@ -74,13 +82,20 @@ watch(minutes, (newValue) => {
     let sanitizedValue = newValue.trim();
 
     if (/^0x[0-9a-fA-F]*$/i.test(sanitizedValue)) {
-      // Hex input, keep as is while typing
+      // hex input, keep as is while typing
       minutes.value = sanitizedValue;
     } else {
-      // Decimal input: allow digits and max 2 decimal places
+      // allow digits and max 2 decimal places
       const match = sanitizedValue.match(/^(\d*)(\.?\d{0,2})?/);
       if (match) {
-        minutes.value = (match[1] || "") + (match[2] || "");
+        let val = (match[1] || "") + (match[2] || "");
+        if (val !== "") {
+          const num = parseFloat(val);
+          if (!isNaN(num) && num > 120) {
+            val = "120";
+          }
+        }
+        minutes.value = val;
       } else {
         minutes.value = "";
       }
@@ -88,7 +103,7 @@ watch(minutes, (newValue) => {
   });
 });
 
-// Convert to number when you actually need it
+// Convert to number when needed
 function getMinutesValue() {
   const val = minutes.value.trim();
   if (/^0x[0-9a-fA-F]+$/i.test(val)) return parseInt(val, 16);
