@@ -1,0 +1,56 @@
+name: Cypress Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    name: Cypress Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        browser: [chrome]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Cache dependencies
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Build the app
+      - name: Build application
+        run: npm run build
+
+      # Serve built app using a static server
+      - name: Serve built app
+        run: npx serve -s dist -l 5173 &
+
+      # Wait until the server is ready
+      - name: Wait for server
+        run: npx wait-on http://localhost:5173
+
+      # Run Cypress tests
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v7
+        with:
+          browser: ${{ matrix.browser }}
+          wait-on: "http://localhost:5173"
+          wait-on-timeout: 180
