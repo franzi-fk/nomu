@@ -49,7 +49,7 @@ jobs:
 
       # Run Cypress tests
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v7
+        uses: cypress-io/github-action@v5
         with:
           browser: ${{ matrix.browser }}
           wait-on: "http://localhost:5173"
