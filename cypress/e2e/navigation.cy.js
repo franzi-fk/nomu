@@ -6,6 +6,13 @@ describe("Routing", () => {
   it("opens the legal notice page", () => {
     verifyLegalPage();
   });
+
+  it("redirects to 404 page for unknown urls", () => {
+    cy.visit("http://localhost:5173/randomurl");
+    cy.contains("404");
+    cy.contains("Page not found");
+    cy.get('[data-cy="btn-go-home"]').should("be.visible").and("be.enabled");
+  });
 });
 
 describe("UI Navigation", () => {
@@ -18,6 +25,12 @@ describe("UI Navigation", () => {
   it("navigates from legal notice to home page", () => {
     cy.visit("http://localhost:5173/legal");
     cy.get('[data-cy="btn-go-home"]').should("be.visible").click();
+    verifyHomePage();
+  });
+
+  it("navigates from 404 to home page", () => {
+    cy.visit("http://localhost:5173/randomurl");
+    cy.get('[data-cy="btn-go-home"]').click();
     verifyHomePage();
   });
 });

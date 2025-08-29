@@ -3,8 +3,10 @@ import { createRouter, createWebHistory } from "vue-router";
 // Import your components
 import HomeView from "../views/HomeView.vue";
 import LegalView from "@/views/LegalView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 const routes = [
+  { path: "/:catchAll(.*)", component: NotFoundView },
   {
     path: "/",
     name: "Home",
@@ -18,7 +20,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL), // This enables HTML5 history mode
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
