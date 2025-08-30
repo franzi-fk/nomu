@@ -23,6 +23,7 @@
             placeholder="5"
             width="3rem"
             v-model="minutes"
+            @blur="finalizeInput"
           />
           <label for="inp-minutes">minutes</label>
         </div>
@@ -30,7 +31,7 @@
           data-cy="btn-start-timer"
           text="Start"
           id="btn-start-timer"
-          @click.prevent="timerStarted = !timerStarted"
+          @click.prevent="startTimerHandler"
         />
       </form>
     </article>
@@ -79,37 +80,59 @@ const minutes = ref("5");
 
 watch(minutes, (newValue) => {
   nextTick(() => {
-    let sanitizedValue = newValue.trim();
+    let val = (newValue || "").toString();
 
-    if (/^0x[0-9a-fA-F]*$/i.test(sanitizedValue)) {
-      minutes.value = sanitizedValue;
+    // allow hex input while typing
+    if (/^0x[0-9a-fA-F]*$/i.test(val)) return;
+
+    // only allow digits and a single dot
+    const firstDotIndex = val.indexOf(".");
+    let integerPart = "";
+    let decimalPart = "";
+
+    if (firstDotIndex === -1) {
+      // no dot typed yet
+      integerPart = val.replace(/\D/g, "").slice(0, 3);
+      val = integerPart;
     } else {
-      const match = sanitizedValue.match(/^(\d*)(\.?\d{0,2})?/);
-      if (match) {
-        let val = (match[1] || "") + (match[2] || "");
-        if (val !== "") {
-          const num = parseFloat(val);
-          if (!isNaN(num)) {
-            // appStore values for min/max duration
-            if (num > appStore.timer_max_duration)
-              val = appStore.timer_max_duration.toString();
-            if (num < appStore.timer_min_duration)
-              val = appStore.timer_min_duration.toString();
-          }
-        }
-        minutes.value = val;
-      } else {
-        minutes.value = "";
-      }
+      // dot typed
+      integerPart = val.slice(0, firstDotIndex).replace(/\D/g, "").slice(0, 3);
+      decimalPart = val
+        .slice(firstDotIndex + 1)
+        .replace(/\D/g, "")
+        .slice(0, 2);
+      val = integerPart + "." + decimalPart;
     }
+
+    // enforce max duration during typing
+    const num = parseFloat(val);
+    if (!isNaN(num) && num > appStore.timer_max_duration) {
+      val = appStore.timer_max_duration.toString();
+    }
+
+    minutes.value = val;
   });
 });
 
-// Convert to number when needed
-function getMinutesValue() {
-  const val = minutes.value.trim();
-  if (/^0x[0-9a-fA-F]+$/i.test(val)) return parseInt(val, 16);
-  const parsed = parseFloat(val);
-  return isNaN(parsed) ? 0 : Math.min(parsed, 120);
+function finalizeInput() {
+  let num = parseFloat(minutes.value);
+
+  // enforce min duration
+  if (isNaN(num) || num < appStore.timer_min_duration) {
+    num = appStore.timer_min_duration;
+  }
+
+  // enforce max duration
+  if (num > appStore.timer_max_duration) {
+    num = appStore.timer_max_duration;
+  }
+
+  // round to 2 decimals
+  minutes.value = Number(num.toFixed(2)).toString();
+}
+
+function startTimerHandler() {
+  finalizeInput();
+  timerStarted.value = true;
 }
 </script>
