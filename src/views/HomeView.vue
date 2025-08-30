@@ -21,9 +21,11 @@
             data-cy="inp-set-timer"
             id="inp-minutes"
             placeholder="5"
-            width="3rem"
+            width="7ch"
             v-model="minutes"
             @blur="finalizeInput"
+            @focus="selectAll"
+            @mousedown.prevent="selectAll"
           />
           <label for="inp-minutes">minutes</label>
         </div>
@@ -142,4 +144,11 @@ watch(timerStarted, (running) => {
     document.title = "nomu";
   }
 });
+
+function selectAll(event) {
+  // delay slightly to ensure browser doesn’t override selection
+  requestAnimationFrame(() => {
+    event.target.select();
+  });
+}
 </script>

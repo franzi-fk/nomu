@@ -50,6 +50,19 @@ describe("Looped timer", () => {
       cy.contains("3 minutes").should("be.visible");
       cy.get('[data-cy="btn-stop-timer"]').should("be.visible");
     });
+
+    it("handles large fractional durations without input overflow", () => {
+      const largeDuration = "100.55";
+
+      cy.get('[data-cy="inp-set-timer"]').clear().type(largeDuration).blur();
+      cy.get('[data-cy="inp-set-timer"]').should("have.value", largeDuration);
+
+      // check for overflow
+      cy.get('[data-cy="inp-set-timer"]').then(($input) => {
+        const el = $input[0];
+        expect(el.scrollWidth).to.be.lte(el.clientWidth);
+      });
+    });
   });
 
   context("Run timer", () => {
