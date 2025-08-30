@@ -22,17 +22,15 @@ const props = defineProps({
 });
 
 const intervalId = ref(null);
-
-// time left in milliseconds
-const timeLeftMs = ref(Math.round(props.duration * 60 * 1000));
+const startTime = ref(null);
+const endTime = ref(null);
 
 // track previous second for accurate sound trigger
-const previousSecond = ref(Math.floor(timeLeftMs.value / 1000));
+const previousSecond = ref(0);
 
 // audio setup
 const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`));
 
-// react to sound changes
 watch(
   () => appStore.selectedSound,
   (newSound) => {
@@ -44,17 +42,36 @@ watch(
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
 
-  // reset timer
+  // absolute times
   const durationMs = Math.round(props.duration * 60 * 1000);
-  timeLeftMs.value = durationMs;
-  previousSecond.value = Math.floor(timeLeftMs.value / 1000);
+  startTime.value = Date.now();
+  endTime.value = startTime.value + durationMs;
+
+  previousSecond.value = Math.ceil(durationMs / 1000);
 
   intervalId.value = setInterval(() => {
-    timeLeftMs.value -= 1000;
+    const now = Date.now();
+    let remainingMs = endTime.value - now;
 
-    const currentSecond = Math.max(Math.floor(timeLeftMs.value / 1000), 0);
+    if (remainingMs <= 0) {
+      // play sound at zero
+      if (
+        previousSecond.value > 0 &&
+        audio.value &&
+        typeof audio.value.play === "function"
+      ) {
+        audio.value.play();
+      }
+      // loop timer
+      startTime.value = Date.now();
+      endTime.value = startTime.value + durationMs;
+      remainingMs = durationMs;
+      previousSecond.value = Math.ceil(remainingMs / 1000);
+    }
 
-    // play sound
+    const currentSecond = Math.ceil(remainingMs / 1000);
+
+    // play sound if hitting zero
     if (currentSecond === 0 && previousSecond.value > 0) {
       if (audio.value && typeof audio.value.play === "function") {
         audio.value.play();
@@ -62,18 +79,37 @@ const startTimer = () => {
     }
 
     previousSecond.value = currentSecond;
-
-    // reset timer after 00:00 has been displayed
-    if (timeLeftMs.value < 0) {
-      timeLeftMs.value = durationMs;
-      previousSecond.value = Math.floor(timeLeftMs.value / 1000);
-    }
-  }, 1000);
+    timeLeftMs.value = remainingMs;
+  }, 200); // faster interval ensures smoother updates even if throttled
 };
 
-onMounted(() => startTimer());
+// reactive time left
+const timeLeftMs = ref(Math.round(props.duration * 60 * 1000));
+
+watch(timeLeftMs, (newVal) => {
+  const totalSeconds = Math.floor(Math.max(newVal, 0) / 1000);
+  const minutes = Math.floor(totalSeconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+
+  document.title = `${minutes}:${seconds} – nomu`;
+});
+
+// beforeUnload warning
+const handleBeforeUnload = (event) => {
+  event.preventDefault();
+  event.returnValue = "Reload page? The timer will reset.";
+};
+
+onMounted(() => {
+  startTimer();
+  window.addEventListener("beforeunload", handleBeforeUnload);
+});
+
 onBeforeUnmount(() => {
   if (intervalId.value) clearInterval(intervalId.value);
+  window.removeEventListener("beforeunload", handleBeforeUnload);
 });
 
 // display MM:SS
@@ -83,7 +119,6 @@ const displayTime = computed(() => {
     .toString()
     .padStart(2, "0");
   const seconds = (totalSeconds % 60).toString().padStart(2, "0");
-
   return `${minutes}:${seconds}`;
 });
 </script>
