@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore("appStore", {
   state: () => ({
+    timer_min_duration: 0.05,
+    timer_max_duration: 120,
     selectedTheme: "light-rose",
     selectedSound: {
       name: "handpan",

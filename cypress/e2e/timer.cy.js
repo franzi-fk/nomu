@@ -4,25 +4,34 @@ describe("Looped timer", () => {
   });
 
   context("Set timer", () => {
+    context("Timer input validation", () => {
+      it("does not allow non-numeric characters in the input", () => {
+        cy.get('[data-cy="inp-set-timer"]').clear().type("aA*-_");
+        cy.get('[data-cy="inp-set-timer"]').should("have.value", "");
+      });
+
+      it("autocorrects tiny durations to 0.05 as minimum duration", () => {
+        cy.get('[data-cy="inp-set-timer"]').clear().type("0.02");
+        cy.get('[data-cy="inp-set-timer"]').should("have.value", "0.05");
+        cy.get('[data-cy="inp-set-timer"]').clear().type("0");
+        cy.get('[data-cy="inp-set-timer"]').should("have.value", "0.05");
+      });
+
+      it("autocorrects larger numbers to 120 minutes as maximum duration", () => {
+        cy.get('[data-cy="inp-set-timer"]').clear().type("500");
+        cy.get('[data-cy="inp-set-timer"]').should("have.value", "120");
+      });
+
+      it("lets user set a decimal number duration", () => {
+        cy.get('[data-cy="inp-set-timer"]').clear().type("3.45");
+        cy.get('[data-cy="inp-set-timer"]').should("have.value", "3.45");
+      });
+    });
+
     it("has default duration and lets user set a duration", () => {
       cy.get('[data-cy="inp-set-timer"]').should("have.value", "5"); // default
       cy.get('[data-cy="inp-set-timer"]').clear().type("10");
       cy.get('[data-cy="inp-set-timer"]').should("have.value", "10");
-    });
-
-    it("does not allow non-numeric characters in the input", () => {
-      cy.get('[data-cy="inp-set-timer"]').clear().type("aA*-_");
-      cy.get('[data-cy="inp-set-timer"]').should("have.value", "");
-    });
-
-    it("autocorrects larger numbers to 120 minutes as maximum duration", () => {
-      cy.get('[data-cy="inp-set-timer"]').clear().type("500");
-      cy.get('[data-cy="inp-set-timer"]').should("have.value", "120");
-    });
-
-    it("lets user set a decimal number duration", () => {
-      cy.get('[data-cy="inp-set-timer"]').clear().type("3.45");
-      cy.get('[data-cy="inp-set-timer"]').should("have.value", "3.45");
     });
 
     it("starts the timer with the duration defined by the user", () => {

@@ -42,11 +42,17 @@ watch(
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
 
+  // enforce min/max duration from appStore
+  const safeDuration = Math.min(
+    Math.max(props.duration, appStore.timer_min_duration),
+    appStore.timer_max_duration
+  );
+
   // absolute times
-  const durationMs = Math.round(props.duration * 60 * 1000);
+  const durationMs = Math.round(safeDuration * 60 * 1000);
+
   startTime.value = Date.now();
   endTime.value = startTime.value + durationMs;
-
   previousSecond.value = Math.ceil(durationMs / 1000);
 
   intervalId.value = setInterval(() => {
