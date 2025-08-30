@@ -82,17 +82,19 @@ watch(minutes, (newValue) => {
     let sanitizedValue = newValue.trim();
 
     if (/^0x[0-9a-fA-F]*$/i.test(sanitizedValue)) {
-      // hex input, keep as is while typing
       minutes.value = sanitizedValue;
     } else {
-      // allow digits and max 2 decimal places
       const match = sanitizedValue.match(/^(\d*)(\.?\d{0,2})?/);
       if (match) {
         let val = (match[1] || "") + (match[2] || "");
         if (val !== "") {
           const num = parseFloat(val);
-          if (!isNaN(num) && num > 120) {
-            val = "120";
+          if (!isNaN(num)) {
+            // appStore values for min/max duration
+            if (num > appStore.timer_max_duration)
+              val = appStore.timer_max_duration.toString();
+            if (num < appStore.timer_min_duration)
+              val = appStore.timer_min_duration.toString();
           }
         }
         minutes.value = val;
