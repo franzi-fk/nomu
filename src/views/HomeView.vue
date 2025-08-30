@@ -135,4 +135,11 @@ function startTimerHandler() {
   finalizeInput();
   timerStarted.value = true;
 }
+
+watch(timerStarted, (running) => {
+  if (!running) {
+    // reset tab title
+    document.title = "nomu";
+  }
+});
 </script>
