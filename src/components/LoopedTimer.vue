@@ -11,8 +11,10 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { useAppStore } from "@/stores/appStore";
+import { getAudioContext } from "@/utils/audioContext";
 
 const appStore = useAppStore();
+const audioCtx = getAudioContext();
 
 const props = defineProps({
   duration: {
@@ -28,16 +30,43 @@ const endTime = ref(null);
 // track previous second for accurate sound trigger
 const previousSecond = ref(0);
 
-// audio setup
-const audio = ref(new Audio(`/sounds/${appStore.selectedSound.file}`));
+// AudioBuffer for the custom sound
+let alarmBuffer = null;
 
+// track if the pre-alarm has already played this iteration
+let preAlarmPlayed = false;
+
+// Load the selected sound file into an AudioBuffer
+async function loadAlarmSound(fileName) {
+  if (!audioCtx || !fileName) return;
+
+  try {
+    const response = await fetch(`/sounds/${fileName}`);
+    const arrayBuffer = await response.arrayBuffer();
+    alarmBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  } catch (error) {
+    console.error("Failed to load notification sound:", error);
+  }
+}
+
+// Watch for changes in selectedSound and reload buffer
 watch(
   () => appStore.selectedSound,
   (newSound) => {
-    audio.value = new Audio(`/sounds/${newSound.file}`);
+    loadAlarmSound(newSound.file);
   },
   { immediate: true }
 );
+
+// function to play the loaded alarm sound
+function playAlarm() {
+  if (!audioCtx || !alarmBuffer) return;
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = alarmBuffer;
+  source.connect(audioCtx.destination);
+  source.start();
+}
 
 const startTimer = () => {
   if (intervalId.value) clearInterval(intervalId.value);
@@ -55,35 +84,32 @@ const startTimer = () => {
   endTime.value = startTime.value + durationMs;
   previousSecond.value = Math.ceil(durationMs / 1000);
 
+  const preAlarmMs = 900; // play sound slightly before zero (leads to more natural results)
+
   intervalId.value = setInterval(() => {
     const now = Date.now();
     let remainingMs = endTime.value - now;
 
+    // play sound slightly before zero
+    if (!preAlarmPlayed && remainingMs <= preAlarmMs) {
+      playAlarm();
+      preAlarmPlayed = true; // mark as played
+    }
+
+    // loop timer when it actually hits zero
     if (remainingMs <= 0) {
-      // play sound at zero
-      if (
-        previousSecond.value > 0 &&
-        audio.value &&
-        typeof audio.value.play === "function"
-      ) {
-        audio.value.play();
-      }
-      // loop timer
-      startTime.value = Date.now();
+      startTime.value = endTime.value;
       endTime.value = startTime.value + durationMs;
-      remainingMs = durationMs;
+      remainingMs = endTime.value - now;
       previousSecond.value = Math.ceil(remainingMs / 1000);
+
+      // reset pre-alarm flag for the next iteration
+      preAlarmPlayed = false;
     }
 
-    const currentSecond = Math.ceil(remainingMs / 1000);
+    const currentSecond = Math.ceil(Math.max(remainingMs, 0) / 1000);
 
-    // play sound if hitting zero
-    if (currentSecond === 0 && previousSecond.value > 0) {
-      if (audio.value && typeof audio.value.play === "function") {
-        audio.value.play();
-      }
-    }
-
+    // update previousSecond after playing
     previousSecond.value = currentSecond;
     timeLeftMs.value = remainingMs;
   }, 200); // faster interval ensures smoother updates even if throttled
