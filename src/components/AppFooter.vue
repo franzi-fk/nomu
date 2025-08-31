@@ -1,7 +1,7 @@
 <template>
   <div
     id="footer-wrapper"
-    class="flex items-center justify-between pl-8 pr-8 h-12 text-[0.8125rem]"
+    class="flex items-center justify-between pl-4 pr-4 md:pl-8 md:pr-8 h-12 text-[0.7rem] md:text-[0.8125rem] mb-1 md:mb-0"
     :class="appStore.isDarkTheme ? 'text-text-muted-l1' : 'text-text-muted-l2'"
   >
     <!-- dynamic photo credits -->

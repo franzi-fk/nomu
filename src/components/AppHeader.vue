@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between pl-8 pr-4 h-16">
+  <div class="flex items-center justify-between pl-4 pr-2 h-16 md:pl-8 md:pr-4">
     <h1 aria-label="Logo Nomu">
       <NomuLogo
         :variant="appStore.isDarkTheme ? 'darkmode' : 'lightmode'"

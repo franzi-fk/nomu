@@ -1,11 +1,14 @@
 <template>
-  <div id="legalView" class="normal-case text-base text-text">
+  <div
+    id="legalView"
+    class="normal-case text-base text-text w-full h-full pt-4 pb-8 md:pt-1 md:pb-4"
+  >
     <!-- back button -->
     <router-link :to="{ name: 'Home' }">
       <TextButton
         text="Go back"
         :icon="ArrowLongLeftIcon"
-        class="mt-6 mb-8 mx-6"
+        class="mt-2 mb-8 mx-0 md:mx-4"
         data-cy="btn-go-home"
       />
     </router-link>

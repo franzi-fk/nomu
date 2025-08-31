@@ -1,7 +1,7 @@
 <template>
   <AppHeader />
   <div
-    class="flex flex-col items-center justify-center gap-6 flex-1 w-full pb-[1.75rem]"
+    class="flex flex-col items-center justify-center gap-6 flex-1 w-full pt-4 pb-8 px-4 md:px-8"
   >
     <CustomizeSidebar
       v-show="appStore.sidebarVisible"
