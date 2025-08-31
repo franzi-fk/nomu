@@ -84,7 +84,10 @@ describe("Looped timer", () => {
     });
 
     it("stops the timer when the user clicks stop", () => {
-      // test code here
+      cy.get('[data-cy="btn-stop-timer"]').should("be.visible").click();
+      cy.get('[data-cy="looped-timer"]').should("not.exist");
+      cy.get('[data-cy="inp-set-timer"]').should("be.visible");
+      cy.get('[data-cy="btn-start-timer"]').should("be.visible");
     });
   });
 
