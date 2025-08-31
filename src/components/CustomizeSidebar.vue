@@ -17,7 +17,7 @@
       <TextButton
         data-cy="btn-close-sidebar"
         @click="appStore.closeSidebar"
-        class="absolute top-4 right-[19.5rem] flex items-center justify-center rounded-full z-[105] hover:bg-bg-l2/75 cursor-pointer"
+        class="absolute top-4 right-4 md:right-[19.5rem] flex items-center justify-center rounded-full z-[105] hover:bg-bg-l2/75 cursor-pointer"
         aria-label="Close sidebar"
         :icon="XMarkIcon"
       />
@@ -26,9 +26,9 @@
       <aside
         ref="sidebar"
         id="sidebar-wrapper"
-        class="absolute top-0 right-0 h-full w-[19rem] bg-bg-l2/75 p-4 rounded-tl-3xl rounded-bl-3xl text-text backdrop-blur text-[0.9688rem] tracking-[.085rem] z-[102] overflow-auto"
+        class="absolute top-0 right-0 h-full w-full md:w-[19rem] bg-bg-l2/75 p-4 md:rounded-tl-3xl md:rounded-bl-3xl text-text backdrop-blur text-[0.9688rem] tracking-[.085rem] z-[102] overflow-auto"
       >
-        <article class="flex flex-col gap-6 px-4 pt-3">
+        <article class="flex flex-col gap-6 px-4 pt-8 md:pt-3">
           <!-- Notification Sounds -->
           <section>
             <h3 class="mb-2">Notification Sound</h3>
@@ -36,7 +36,7 @@
               <li
                 v-for="sound in sounds"
                 :key="sound.name"
-                class="flex items-center justify-between py-4"
+                class="flex items-center justify-between py-5 md:py-4"
               >
                 <div class="flex items-center justify-between gap-5 w-full">
                   <!-- Custom ToggleSwitch with label -->
@@ -66,7 +66,7 @@
           <section>
             <h3 class="mb-2">Color Theme</h3>
             <ul
-              class="grid grid-cols-5 gap-y-6 gap-x-3 w-fill justify-between py-3"
+              class="grid grid-cols-5 gap-y-8 md:gap-y-6 gap-x-3 w-fill justify-between py-3"
             >
               <li v-for="theme in appStore.themes" :key="theme">
                 <SelectableItem
