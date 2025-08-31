@@ -73,6 +73,7 @@ import { useAppStore } from "@/stores/appStore";
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 import AppFooter from "@/components/AppFooter.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import { unlockAudioContext } from "@/utils/audioContext";
 
 const appStore = useAppStore();
 const timerStarted = ref(false);
@@ -135,6 +136,7 @@ function finalizeInput() {
 
 function startTimerHandler() {
   finalizeInput();
+  unlockAudioContext(); // unlock audio on user click
   timerStarted.value = true;
 }
 
