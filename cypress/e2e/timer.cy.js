@@ -1,3 +1,10 @@
+function spyOnAudio() {
+  // spy on AudioContext buffer playback
+  cy.window().then((win) => {
+    cy.spy(win.AudioBufferSourceNode.prototype, "start").as("audioStart");
+  });
+}
+
 describe("Looped timer", () => {
   beforeEach(() => {
     cy.visit("http://localhost:5173/");
@@ -106,12 +113,26 @@ describe("Looped timer", () => {
     });
 
     it("plays sound when timer hits zero", () => {
-      // spy on the audio prototype play method
+      spyOnAudio();
+      cy.contains("00:00").should("be.visible");
+      cy.get("@audioStart").should("have.been.calledOnce");
+      cy.wait(500);
+    });
+
+    it("calls playAlarm even when tab is inactive", () => {
+      spyOnAudio();
+
+      // simulate tab being hidden
       cy.window().then((win) => {
-        cy.spy(win.Audio.prototype, "play").as("audioPlay");
+        Object.defineProperty(win.document, "hidden", {
+          value: true,
+          writable: true,
+        });
+        win.document.dispatchEvent(new Event("visibilitychange"));
       });
       cy.contains("00:00").should("be.visible");
-      cy.get("@audioPlay").should("have.been.calledOnce");
+      cy.get("@audioStart").should("have.been.calledOnce");
+      cy.wait(500);
     });
   });
 });

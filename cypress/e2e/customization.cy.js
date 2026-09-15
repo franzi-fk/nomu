@@ -1,3 +1,10 @@
+function spyOnAudio() {
+  // spy on AudioContext buffer playback
+  cy.window().then((win) => {
+    cy.spy(win.AudioBufferSourceNode.prototype, "start").as("audioStart");
+  });
+}
+
 context("Customization", () => {
   beforeEach(() => {
     cy.visit("http://localhost:5173/");
@@ -42,10 +49,7 @@ context("Customization", () => {
       cy.get('[data-cy="inp-set-timer"]').clear().type("0.05");
       cy.get('[data-cy="btn-start-timer"]').click();
 
-      // spy on audio
-      cy.window().then((win) => {
-        cy.spy(win.Audio.prototype, "play").as("audioPlay");
-      });
+      spyOnAudio();
 
       // loop over each sound
       soundNames.forEach((name) => {
@@ -61,10 +65,10 @@ context("Customization", () => {
         cy.contains("00:00").should("exist");
 
         // verify audio was played
-        cy.get("@audioPlay").should("have.been.called");
+        cy.get("@audioStart").should("have.been.called");
 
         // reset spy for next sound
-        cy.get("@audioPlay").invoke("resetHistory");
+        cy.get("@audioStart").invoke("resetHistory");
       });
       cy.wait(700);
     });
