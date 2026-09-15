@@ -22,8 +22,8 @@
       <h2 class="h2">Information according to § 5 TMG (Germany)</h2>
       <p class="mb-6">
         Franziska Kiel <br />
-        Rheingoldstraße 157 <br />
-        68199 Mannheim <br />
+        Schleider Straße 4 <br />
+        36419 Geisa <br />
         Germany
       </p>
       <h2 class="h2">Contact</h2>
